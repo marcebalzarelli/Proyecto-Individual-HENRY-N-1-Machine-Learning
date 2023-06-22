@@ -102,4 +102,3 @@ def get_director(nombre_director: str):
         'Películas': peliculas
     }
 
-uvicorn main:app --host 0.0.0.0 --port 10000
