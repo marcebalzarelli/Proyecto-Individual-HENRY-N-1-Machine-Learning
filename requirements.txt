@@ -14,4 +14,3 @@ sniffio
 starlette
 typing_extensions
 uvicorn
-zipfile
