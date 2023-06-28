@@ -26,7 +26,7 @@ df=pd.read_csv('df_2000.csv')
 @app.get('/cantidad_filmaciones_mes')
 def cantidad_filmaciones_mes(Mes: str):
     mes_lower = Mes.lower()   ## para ignorar mayusculas y minusculas
-    # Contar la cantidad de películas estrenadas en el mes
+    # Cuento la cantidad de películas estrenadas en el mes
     cantidad = df_final[df_final['Mes'].str.lower() == mes_lower].shape[0]
     return f"{cantidad} cantidad de películas fueron estrenadas en el mes de {Mes}"
 
@@ -34,7 +34,7 @@ def cantidad_filmaciones_mes(Mes: str):
 @app.get('/cantidad_filmaciones_dia')
 def cantidad_filmaciones_dia(Dia: str):
     dia_lower = Dia.lower()  ## para ignorar mayusculas y minusculas
-    #Contar la cantidad de películas estrenadas en el día
+    #Cuento la cantidad de películas estrenadas en el día
     cantidad = df_final[df_final['DiaSemana'].str.lower() == dia_lower].shape[0]
     return f"{cantidad} cantidad de películas fueron estrenadas en los días {Dia}"
 
@@ -42,7 +42,7 @@ def cantidad_filmaciones_dia(Dia: str):
 @app.get('/score_titulo')
 def score_titulo(titulo_de_la_filmación: str):
     titulo_lower = titulo_de_la_filmación.lower() ## para ignorar mayusculas y minusculas
-    # Obtener el título, año de estreno y score
+    # Obtengo el título, año de estreno y score
     row = df_final[df_final['title'].str.lower() == titulo_lower].iloc[0]
     titulo = row['title']
     año = row['release_year']
@@ -53,7 +53,7 @@ def score_titulo(titulo_de_la_filmación: str):
 @app.get('/votos_titulo')
 def votos_titulo(titulo_de_la_filmación: str):
     titulo_lower = titulo_de_la_filmación.lower() ## para ignorar mayusculas y minusculas
-    # Obtener el título, cantidad de votos y valor promedio
+    # Obtengo el título, cantidad de votos y valor promedio
     row = df_final[df_final['title'].str.lower() == titulo_lower].iloc[0]
     titulo = row['title']
     año = row['release_year']
@@ -72,7 +72,7 @@ def get_actor(nombre_actor: str):
     # Relleno los valores NaN en las columnas relevantes con valores adecuados para que no me largue error
     df_final['cast'] = df_final['cast'].fillna('')
     df_final['return'] = df_final['return'].fillna(0)
-    # Obtener el éxito del actor, cantidad de filmaciones y promedio de retorno
+    # Obtengo el éxito del actor, cantidad de filmaciones y promedio de retorno
     actor_data = df_final[df_final['cast'].str.lower().str.contains(nombre_actor_lower, case=False)]
     cantidad_filmaciones = actor_data.shape[0]
     éxito = actor_data['return'].sum()
@@ -120,7 +120,7 @@ cosine_sim = cosine_similarity(count_matrix)
 def get_recomendacion(titulo: str):
     titulo = titulo.lower()
 
-    # Buscar la película en el DataFrame
+    # Busco la película en el DataFrame
     matches = df[df['title'].str.lower() == titulo]
 
     if matches.empty:
@@ -134,18 +134,18 @@ def get_recomendacion(titulo: str):
 
     return {'recomendacion': top_movies}
 
-# Punto final para obtener la especificación OpenAPI en formato JSON
+# Endpoint para obtener la especificación OpenAPI en formato JSON
 @app.get("/openapi.json", include_in_schema=False)
 async def get_openapi_endpoint():
     return JSONResponse(get_openapi(title="Documentación de la API", version="1.0.0", routes=app.routes))
 
-# Punto final para obtener la interfaz Swagger HTML
+# Endpoint para obtener la interfaz Swagger HTML
 @app.get("/docs", include_in_schema=False)
 async def get_documentation(request: Request):
     openapi_url = app.url_path_for("get_openapi_endpoint")
     return {"openapi_url": openapi_url}
 
-# Ejecutar el servidor Uvicorn
+# Ejecuta el servidor Uvicorn
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
