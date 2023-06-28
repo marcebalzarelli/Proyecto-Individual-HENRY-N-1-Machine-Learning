@@ -55,3 +55,5 @@ Para ejecutar este proyecto, se requiere tener instaladas las siguientes depende
 
 -Python (versión 3.x)
 -Bibliotecas de Python: pandas, numpy, scikit-learn, fastapi, uvicorn
+
+**LINK DE LA API EN RENDER:** https://proyecto-1-henry-api-de-recomendacion.onrender.com/docs
